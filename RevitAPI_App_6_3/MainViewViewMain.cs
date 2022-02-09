@@ -28,7 +28,7 @@ namespace RevitAPI_App_6_3
             _commandData = commandData;
             Furniture = FurnitureUtils.GetFurniture(commandData);
             Levels = LevelsUtils.GetLevels(commandData);
-            ElementCount = 0;
+            ElementCount = 0;                                   // количество элементов
             SaveCommand = new DelegateCommand(onSaveCommand);
             InsertionPoint1 = SelectionUtils.GetPoint(_commandData, "Укажите первую точку", ObjectSnapTypes.Endpoints);
             InsertionPoint2 = SelectionUtils.GetPoint(_commandData, "Укажите вторую точку", ObjectSnapTypes.Endpoints);
@@ -39,7 +39,7 @@ namespace RevitAPI_App_6_3
             UIDocument uidoc = uiapp.ActiveUIDocument;
             Document doc = uidoc.Document;
 
-            if (SelectedFurniture == null || SelectedLevel == null)
+            if (SelectedFurniture == null || SelectedLevel == null) // если не выбран тип или уровень
                 return;
             var oLevel = (Level)doc.GetElement(SelectedLevel.Id);
             var oFamSymb = (FamilySymbol)doc.GetElement(SelectedFurniture.Id);
@@ -53,9 +53,9 @@ namespace RevitAPI_App_6_3
             {
                 var pPX = pEX - i * ((pEX - p0X) / (ElementCount + 1));
                 var pPY = pEY - i * ((pEY - p0Y) / (ElementCount + 1));
-                XYZ pP = new XYZ(pPX, pPY, 0);
+                XYZ pP = new XYZ(pPX, pPY, 0);                              // определение точки вставки экземпляра
 
-                FamilyInstanceUtils.CreateFamilyInstance(_commandData, oFamSymb, pP, oLevel);
+                FamilyInstanceUtils.CreateFamilyInstance(_commandData, oFamSymb, pP, oLevel); // создаем экземпляр
             }
             RaiseCloseRequest();
         }
